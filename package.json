@@ -1,0 +1,19 @@
+{
+  "name": "guru-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "nodemon": "^3.1.1"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
