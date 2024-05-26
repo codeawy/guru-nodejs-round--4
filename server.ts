@@ -2,6 +2,7 @@ import express from "express";
 import { Product } from "./interface";
 
 const app = express();
+app.use(express.json());
 
 // ** Routes
 app.get("/", (req, res) => {
@@ -39,6 +40,15 @@ app.get("/api/products/:id", (req, res) => {
       message: `Product with id '${id}' not found`,
     });
   }
+});
+
+app.post("/api/products", (req, res) => {
+  // ** 1.Get product body
+  const product = req.body;
+  // ** 2.Add the product to the products list
+  products.push({ id: products.length + 1, ...product });
+  // ** 3.Send the product back to the client
+  res.status(201).json({ id: products.length + 1, ...product });
 });
 
 // ** Not Found Route
