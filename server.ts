@@ -1,5 +1,6 @@
 import express from "express";
-import { Product } from "./interface";
+import productsRouter from "./routes/productsRouter";
+import { fakeProductsData } from "./utils/fakeData";
 
 const app = express();
 app.use(express.json());
@@ -9,17 +10,7 @@ app.get("/", (req, res) => {
   res.send("<h1>Home Page</h1>");
 });
 
-const products: Product[] = Array.from({ length: 10 }, (_, idx) => ({
-  id: idx + 1,
-  name: `Product #${idx + 1}`,
-  description: `Product #${idx + 1} description`,
-  price: Math.floor(Math.random() * 1000) + 100,
-  image: `https://picsum.photos/200/300?random=${idx + 1}`,
-}));
-
-app.get("/api/products", (req, res) => {
-  res.send(products);
-});
+app.use("/api/products", productsRouter);
 
 app.get("/api/products/:id", (req, res) => {
   const { id } = req.params;
@@ -31,7 +22,7 @@ app.get("/api/products/:id", (req, res) => {
     return;
   }
   // ** 2. if the product not exists, throw an error with (404) status code
-  const product = products.find(item => item.id === +id);
+  const product = fakeProductsData.find(item => item.id === +id);
   if (product) {
     res.status(200).json(product);
   } else {
@@ -46,9 +37,9 @@ app.post("/api/products", (req, res) => {
   // ** 1.Get product body
   const product = req.body;
   // ** 2.Add the product to the products list
-  products.push({ id: products.length + 1, ...product });
+  fakeProductsData.push({ id: fakeProductsData.length + 1, ...product });
   // ** 3.Send the product back to the client
-  res.status(201).json({ id: products.length + 1, ...product });
+  res.status(201).json({ id: fakeProductsData.length, ...product });
 });
 
 // ** Not Found Route
@@ -60,5 +51,5 @@ const PORT = 5000;
 
 // ** Setup a server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running http://localhost:${PORT}`);
 });
